@@ -1,0 +1,18 @@
+@import "./base.css";
+
+/* HEADER */
+
+.header {
+  text-align: center;
+
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+
+.header__h1 {
+  font-weight: var(--font-weight-bold);
+  font-size: 1em;
+
+  margin: 0;
+  margin-top: 30px;
+}
