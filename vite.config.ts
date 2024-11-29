@@ -17,5 +17,15 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  // для борьбы с CORS
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api.sputnik8.com', 
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   }
 })

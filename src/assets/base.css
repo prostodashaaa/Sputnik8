@@ -2,7 +2,10 @@
   /* Colors */
   --color-main: #ffffff;
   --color-text: #000000;
-  --color-placeholder: #999999;
+  --color-ul: #444444;
+  --color-light-text: #999999;
+  --color-border: #DDDDDD;
+  --color-hover: #eaeaea;
 
   --font-weight-bold: 700;
 }
@@ -21,7 +24,7 @@ body {
 
 #app {
   font-size: 48px;
-  
+
   max-width: 100%;
   margin: 0 auto;
 }
