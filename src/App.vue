@@ -46,27 +46,36 @@
           </ul>
         </div>
       </div>
-      <div class="main__cards" v-if="showExcursionList">
-        <div class="cards_item">
-          <img
-            class="cards_item-image"
-            :src="excursions.image_big"
-            alt="Фото"
-          />
+      <div
+        class="main__cards"
+        v-if="searchCity.length || searchExcursion.length"
+      >
+        <div
+          class="cards_item"
+          v-for="excursion in filteredExcursion"
+          :key="excursion.title"
+        >
+          <div class = "cards_item_container-image">
+            <img
+              class="cards_item-image"
+              :src="excursion.image_big"
+              alt="Фото"
+            />
+          </div>
           <div class="cards_item-description">
             <div class="description__raiting">
               <img src="./components/icons/star.svg" alt="Оценка" />
               <p class="avg_raiting">
-                {{ excursions.customers_review_rating }}
+                {{ excursion.customers_review_rating }}
               </p>
-              <p class="count_raiting">{{ excursions.reviews }}</p>
+              <p class="count_raiting">({{ excursion.reviews }})</p>
             </div>
-            <h3 class="description__title">{{ excursions.title }}</h3>
-            <div class = 'description__price'>
-              <p class = 'description__price_min'>от {{ excursions.price }} </p>
-              <p class = 'description__price_categories'>за экскурсию</p>
-            </div>
+            <h3 class="description__title">{{ excursion.title }}</h3>
           </div>
+          <div class="description__price">
+              <p class="description__price_min">от {{ excursion.price }}</p>
+              <p class="description__price_categories">за экскурсию</p>
+            </div>
         </div>
       </div>
     </main>
@@ -87,6 +96,7 @@ interface Excursion {
   reviews: number;
   title: string;
   price: number;
+  city_id: number;
 }
 
 export default {
@@ -95,12 +105,12 @@ export default {
     return {
       cities: [] as City[],
       excursions: [] as Excursion[],
-      filteredCities: [] as City,
-      filteredExcursion: [] as Excursion,
+      filteredCities: [] as City[],
+      filteredExcursion: [] as Excursion[],
       searchCity: "" as string,
       searchExcursion: "" as string,
       showCityList: false as boolean,
-      showExcursionList: true as boolean,
+      showExcursionList: false as boolean,
     };
   },
 
@@ -111,7 +121,7 @@ export default {
           "/api/v1/cities?api_key=873fa71c061b0c36d9ad7e47ec3635d9&limit=5&page=1&username=frontend@sputnik8.com"
         );
         this.cities = response.data;
-        this.filteredCities = this.cities;
+        filterCities();
       } catch (error) {
         console.error("Ошибка загрузки городов:", error);
       }
@@ -132,7 +142,7 @@ export default {
     filterCities(): void {
       this.filteredCities = this.cities.filter((city) =>
         city.name.toLowerCase().includes(this.searchCity.toLowerCase())
-      );
+      ).slice(0,5);
     },
 
     filterExcursion(): void {

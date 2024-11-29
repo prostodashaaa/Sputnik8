@@ -2,7 +2,7 @@
   /* Colors */
   --color-main: #ffffff;
   --color-text: #000000;
-  --color-ul: #444444;
+  --color-medium-text: #444444;
   --color-light-text: #999999;
   --color-border: #DDDDDD;
   --color-hover: #eaeaea;
@@ -27,4 +27,8 @@ body {
 
   max-width: 100%;
   margin: 0 auto;
+}
+
+p, h1, h2, h3 {
+  margin: 0;
 }
