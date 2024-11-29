@@ -39,7 +39,7 @@
             <li
               class="list-city_item"
               v-for="city in filteredCities"
-              @click="selectCity(city)"
+              @click.stop="selectCity(city)"
             >
               {{ city.name }}
             </li>
@@ -55,7 +55,7 @@
           v-for="excursion in filteredExcursion"
           :key="excursion.title"
         >
-          <div class = "cards_item_container-image">
+          <div class="cards_item_container-image">
             <img
               class="cards_item-image"
               :src="excursion.image_big"
@@ -73,9 +73,9 @@
             <h3 class="description__title">{{ excursion.title }}</h3>
           </div>
           <div class="description__price">
-              <p class="description__price_min">от {{ excursion.price }}</p>
-              <p class="description__price_categories">за экскурсию</p>
-            </div>
+            <p class="description__price_min">от {{ excursion.price }}</p>
+            <p class="description__price_categories">за экскурсию</p>
+          </div>
         </div>
       </div>
     </main>
@@ -121,7 +121,9 @@ export default {
           "/api/v1/cities?api_key=873fa71c061b0c36d9ad7e47ec3635d9&limit=5&page=1&username=frontend@sputnik8.com"
         );
         this.cities = response.data;
-        filterCities();
+        this.filteredCities = this.cities
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 5);
       } catch (error) {
         console.error("Ошибка загрузки городов:", error);
       }
@@ -140,22 +142,34 @@ export default {
     },
 
     filterCities(): void {
-      this.filteredCities = this.cities.filter((city) =>
-        city.name.toLowerCase().includes(this.searchCity.toLowerCase())
-      ).slice(0,5);
+      this.filteredCities = this.cities
+        .filter((city) =>
+          city.name.toLowerCase().includes(this.searchCity.toLowerCase())
+        )
+        .slice(0, 5);
     },
 
     filterExcursion(): void {
-      this.filteredExcursion = this.excursions.filter((excursion) =>
-        excursion.title
-          .toLowerCase()
-          .includes(this.searchExcursion.toLowerCase())
-      );
+      this.filteredExcursion = this.excursions.filter((excursion) => {
+        const matchesTitle = this.searchExcursion
+          ? excursion.title
+              .toLowerCase()
+              .includes(this.searchExcursion.toLowerCase())
+          : true;
+
+        const matchesCity = this.searchCity
+          ? excursion.city_id ===
+            this.cities.find((city) => city.name === this.searchCity)?.id
+          : true;
+
+        return matchesTitle && matchesCity;
+      });
     },
 
     selectCity(city: City): void {
       this.searchCity = city.name;
       this.showCityList = false;
+      this.filterExcursion();
     },
   },
 
