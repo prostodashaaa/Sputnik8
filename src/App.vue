@@ -17,9 +17,11 @@
             placeholder="Введите название экскурсии"
           />
           <img
+            v-if="searchExcursion"
             class="img-excursion"
             src="./components/icons/Close.svg"
             alt="Сбросить"
+            @click="reset"
           />
         </div>
         <div class="form_input-city" @click="showCityList = !showCityList">
@@ -46,10 +48,7 @@
           </ul>
         </div>
       </div>
-      <div
-        class="main__cards"
-        v-if="searchCity.length || searchExcursion.length"
-      >
+      <div class="main__cards" v-if="filteredExcursion.length > 0">
         <div
           class="cards_item"
           v-for="excursion in filteredExcursion"
@@ -77,6 +76,12 @@
             <p class="description__price_categories">за экскурсию</p>
           </div>
         </div>
+      </div>
+      <div class="main__no-cards" v-else>
+        <p class="main__no-cards_p">Поиск не дал результатов</p>
+        <button class="main__no-cards_button" @click="resetAll">
+          Сбросить фильтры
+        </button>
       </div>
     </main>
   </div>
@@ -170,6 +175,16 @@ export default {
       this.searchCity = city.name;
       this.showCityList = false;
       this.filterExcursion();
+    },
+
+    reset(): void {
+      this.searchExcursion = "";
+    },
+
+    resetAll(): void {
+      this.searchExcursion = "";
+      this.searchCity = "";
+      this.filteredExcursion = this.excursions;
     },
   },
 

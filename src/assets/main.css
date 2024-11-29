@@ -103,7 +103,7 @@
   justify-content: center;
   gap: 50px;
 
-  padding: 90px;
+  padding: 90px 30px;
 }
 
 .cards_item {
@@ -169,6 +169,33 @@
 
 }
 
+/* NO CARDS */
+
+.main__no-cards {
+  text-align: center;
+  vertical-align: middle;
+
+  padding: 90px 30px;
+}
+
+.main__no-cards_p {
+  font-size: 0.5em;
+  line-height: 34px;
+}
+
+.main__no-cards_button {
+  border-radius: 3px;
+  background-color: #00A7FF;
+  color: var(--color-main);
+  font-size: 0.3em;
+  line-height: 40px;
+  border: 0;
+
+  padding: 0 34px;
+
+  cursor: pointer;
+}
+
 /* ANIMATIONS */
 
 .input-excursion:focus,
@@ -180,4 +207,8 @@
 
 .list-city_item:hover {
   background: var(--color-hover);
+}
+
+.main__no-cards_button:hover {
+  background-color: #0092e1;
 }
